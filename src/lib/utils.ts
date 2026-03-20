@@ -1,9 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 
-/** Merges Tailwind classes safely, resolving conflicts. */
+/**
+ * Combines class names safely. Tailwind was removed from this project,
+ * so we use `clsx` for conditional merging. Keep `cn` small and focused
+ * so callers don't break when utilities aren't present.
+ */
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return clsx(inputs);
 }
 
 /** Formats an ISO date string into a readable format. */
