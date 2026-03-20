@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BlogScreen from "@/screens/Blog/BlogScreen";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -6,10 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  return (
-    <section className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold">Blog</h1>
-      {/* Blog post list will be populated dynamically */}
-    </section>
-  );
+  return <BlogScreen />;
 }

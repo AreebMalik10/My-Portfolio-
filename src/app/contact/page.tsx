@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import ContactScreen from "@/screens/Contact/ContactScreen";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -6,10 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return (
-    <section className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold">Contact</h1>
-      {/* Contact form will be rendered here */}
-    </section>
-  );
+  return <ContactScreen />;
 }

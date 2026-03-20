@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import ProjectsScreen from "@/screens/Projects/ProjectsScreen";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -6,10 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  return (
-    <section className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold">Projects</h1>
-      {/* Projects grid will be populated dynamically */}
-    </section>
-  );
+  return <ProjectsScreen />;
 }
