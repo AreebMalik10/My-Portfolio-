@@ -1,10 +1,11 @@
 export interface Skill {
+  id?: string;
   name: string;
-  iconUrl?: string;
-  proficiency?: "beginner" | "intermediate" | "advanced" | "expert";
-}
-
-export interface SkillGroup {
   category: string;
-  skills: Skill[];
+  proficiency: number;
+  color?: string;
+  shortDescription?: string;
+  imageUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
