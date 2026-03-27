@@ -55,9 +55,9 @@ export async function PUT(req: Request, { params }: { params: { slug: string } }
         const ref = await findProjectRefBySlugOrId(params.slug);
         if (!ref) return NextResponse.json({ error: "Project not found" }, { status: 404 });
 
-            await updateDoc(ref, { ...body, updatedAt: serverTimestamp() });
-            const updatedSnap = await getDoc(ref);
-            return NextResponse.json({ data: { id: updatedSnap.id, ...updatedSnap.data() }, message: "Project updated" }, { status: 200 });
+        await updateDoc(ref, { ...body, updatedAt: serverTimestamp() });
+        const updatedSnap = await getDoc(ref);
+        return NextResponse.json({ data: { id: updatedSnap.id, ...updatedSnap.data() }, message: "Project updated" }, { status: 200 });
     } catch (err: any) {
         console.error(err);
         return NextResponse.json({ error: "Failed to update project" }, { status: 500 });
