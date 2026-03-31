@@ -1,11 +1,14 @@
 export interface Experience {
-  id: string;
-  role: string;
+  id?: string;
   company: string;
-  companyUrl?: string;
+  title: string;
   location?: string;
-  description: string;
-  technologies: string[];
+  currentlyWorking: boolean;
   startDate: string;
-  endDate?: string; // undefined means "Present"
+  endDate?: string;
+  bullets: string[];
+  techStack: string[];
+  images: string[];
+  createdAt: string;
+  updatedAt?: string;
 }

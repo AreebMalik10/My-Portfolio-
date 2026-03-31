@@ -1,13 +1,13 @@
 export interface Project {
-  id: string;
-  slug: string;
+  id?: string;
   title: string;
   description: string;
-  longDescription?: string;
-  thumbnailUrl?: string;
-  demoUrl?: string;
-  repoUrl?: string;
-  tags: string[];
+  techStack: string[];
+  status: 'Draft' | 'Published';
   featured: boolean;
-  publishedAt: string;
+  githubUrl?: string;
+  liveUrl?: string;
+  images?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

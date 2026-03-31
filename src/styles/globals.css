@@ -1,42 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-jetbrains-mono: "JetBrains Mono", monospace;
+  --primary-100: #fee2e2; /* fallback */
+  --primary-900: #7f1d1d;
+  --bg-light: #ffffff;
+  --text-light: #111827;
+  --bg-dark: #0f172a;
+  --text-dark: #f8fafc;
+  scroll-behavior: smooth;
+}
 
-@layer base {
-  :root {
-    --font-inter: "Inter", sans-serif;
-    --font-jetbrains-mono: "JetBrains Mono", monospace;
-    scroll-behavior: smooth;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+html, body, #__next {
+  height: 100%;
+}
 
+body {
+  background: var(--bg-light);
+  color: var(--text-light);
+  font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
-    font-family: var(--font-inter);
-  }
-
-  ::selection {
-    @apply bg-primary-100 text-primary-900;
-  }
-
-  :focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+    background: var(--bg-dark);
+    color: var(--text-dark);
   }
 }
 
-@layer components {
-  .container {
-    @apply mx-auto max-w-6xl;
-  }
+::selection {
+  background: var(--primary-100);
+  color: var(--primary-900);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+:focus-visible {
+  outline: 2px solid rgba(99,102,241,0.9);
+  outline-offset: 2px;
 }
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 72rem; /* ~1152px, similar to max-w-6xl */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Keep this file minimal — MUI will handle most styling */
