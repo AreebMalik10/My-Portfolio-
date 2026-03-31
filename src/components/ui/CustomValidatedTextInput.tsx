@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { Controller, Control, FieldValues, RegisterOptions, Path } from "react-hook-form";
 
 interface CustomValidatedTextInputProps<T extends FieldValues> {
@@ -13,6 +13,10 @@ interface CustomValidatedTextInputProps<T extends FieldValues> {
   type?: string;
   fullWidth?: boolean;
   variant?: "outlined" | "filled" | "standard";
+  /**
+   * Additional props to pass to the underlying MUI TextField (start/end adornments, sx, etc.)
+   */
+  textFieldProps?: TextFieldProps;
 }
 
 export function CustomValidatedTextInput<T extends FieldValues>({
@@ -24,6 +28,7 @@ export function CustomValidatedTextInput<T extends FieldValues>({
   type = "text",
   fullWidth = true,
   variant = "outlined",
+  textFieldProps,
 }: CustomValidatedTextInputProps<T>) {
   return (
     <Controller
@@ -40,6 +45,7 @@ export function CustomValidatedTextInput<T extends FieldValues>({
           variant={variant}
           error={!!fieldState.error}
           helperText={fieldState.error ? String(fieldState.error.message) : undefined}
+          {...textFieldProps}
         />
       )}
     />

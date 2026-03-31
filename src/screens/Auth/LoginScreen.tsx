@@ -12,24 +12,26 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import { useForm } from "react-hook-form";
+import CustomValidatedTextInput from "@/components/ui/CustomValidatedTextInput";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { control, handleSubmit } = useForm<{ email: string; password: string }>({
+    defaultValues: { email: "", password: "" },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (values: { email: string; password: string }) => {
     setError(null);
     setLoading(true);
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ username: values.email, password: values.password }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "Login failed");
@@ -89,28 +91,31 @@ export default function LoginScreen() {
           Welcome back
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            fullWidth
-            label="Email address"
-            placeholder="alex@portfolio.dev"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="username"
-            variant="outlined"
-            InputProps={{
-              startAdornment: <InputAdornment position="start">✉</InputAdornment>,
-            }}
-            sx={{
-              my: 1.5,
-              '& .MuiOutlinedInput-root': {
-                background: 'rgba(255,255,255,0.02)',
-                borderRadius: 1,
-                border: '0.9px solid rgba(26,216,255,0.32)'
-              },
-              input: { color: '#e5e7eb' },
-              label: { color: '#9ca3af' }
+
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="caption" sx={{ color: '#9ca3af', fontWeight: 600 }}>Email Address</Typography>
+          </Box>
+          <CustomValidatedTextInput
+            name="email"
+            control={control}
+            // label="Email address"
+            rules={{ required: "Email is required" }}
+            textFieldProps={{
+              placeholder: "alex@portfolio.dev",
+              autoComplete: "username",
+              InputProps: { startAdornment: <InputAdornment position="start">✉</InputAdornment> },
+              sx: {
+                my: 1.5,
+                '& .MuiOutlinedInput-root': {
+                  background: 'rgba(255,255,255,0.02)',
+                  borderRadius: 1,
+                  border: '0.9px solid rgba(26,216,255,0.32)'
+                },
+                input: { color: '#e5e7eb' },
+                label: { color: '#9ca3af' }
+              }
             }}
           />
 
@@ -118,33 +123,33 @@ export default function LoginScreen() {
             <Typography variant="caption" sx={{ color: '#9ca3af', fontWeight: 600 }}>PASSWORD</Typography>
           </Box>
 
-          <TextField
-            fullWidth
-            placeholder="••••••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+          <CustomValidatedTextInput
+            name="password"
+            control={control}
+            rules={{ required: "Password is required" }}
             type={showPassword ? 'text' : 'password'}
-            autoComplete="current-password"
-            variant="outlined"
-            InputProps={{
-              startAdornment: <InputAdornment position="start">🔒</InputAdornment>,
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword((v) => !v)} edge="end">
-                    {showPassword ? <EyeOff size={16} color="#6b7280" /> : <Eye size={16} color="#6b7280" />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            sx={{
-              my: 1.5,
-              '& .MuiOutlinedInput-root': {
-                background: 'rgba(255,255,255,0.02)',
-                borderRadius: 1,
-                border: '0.9px solid rgba(26,216,255,0.32)'
+            textFieldProps={{
+              placeholder: '••••••••••••',
+              autoComplete: 'current-password',
+              InputProps: {
+                startAdornment: <InputAdornment position="start">🔒</InputAdornment>,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword((v) => !v)} edge="end">
+                      {showPassword ? <EyeOff size={16} color="#6b7280" /> : <Eye size={16} color="#6b7280" />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               },
-              input: { color: '#e5e7eb' },
+              sx: {
+                my: 1.5,
+                '& .MuiOutlinedInput-root': {
+                  background: 'rgba(255,255,255,0.02)',
+                  borderRadius: 1,
+                  border: '0.9px solid rgba(26,216,255,0.32)'
+                },
+                input: { color: '#e5e7eb' },
+              }
             }}
           />
 
