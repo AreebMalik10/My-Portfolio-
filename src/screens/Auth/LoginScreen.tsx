@@ -4,18 +4,16 @@ import { Eye, EyeOff, Terminal, Github } from "lucide-react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
 import { useForm } from "react-hook-form";
 import CustomValidatedTextInput from "@/components/ui/CustomValidatedTextInput";
+import { adminLoginRequest } from "./authSlice";
+import { useAppDispatch } from "@/store/store";
 
 export default function LoginScreen() {
+  const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,21 +26,8 @@ export default function LoginScreen() {
     setError(null);
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: values.email, password: values.password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Login failed");
-      if (data?.data?.token) {
-        if (remember) {
-          localStorage.setItem("admin_token", data.data.token);
-        } else {
-          sessionStorage.setItem("admin_token", data.data.token);
-        }
-      }
-      window.location.href = "/admin/dashboard";
+      const response = await dispatch(adminLoginRequest());
+
     } catch (err: any) {
       setError(String(err?.message || "Login failed"));
     } finally {

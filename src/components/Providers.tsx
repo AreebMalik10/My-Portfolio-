@@ -6,6 +6,8 @@ import createEmotionCache from "@/lib/createEmotionCache";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "@/theme";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "@/store/store";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -19,7 +21,7 @@ export default function Providers({ children, emotionCache = clientSideEmotionCa
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {children}
+        <ReduxProvider store={store}>{children}</ReduxProvider>
       </ThemeProvider>
     </CacheProvider>
   );
