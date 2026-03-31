@@ -55,7 +55,7 @@ export default function RootLayout({
         <Providers>
           <ConditionalNavbar />
           <main>{children}</main>
-          <Footer />
+          {/* <Footer /> */}
         </Providers>
       </body>
     </html>
