@@ -9,35 +9,38 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import CustomValidatedTextInput from "@/components/ui/CustomValidatedTextInput";
-import { adminLoginRequest } from "./authSlice";
+import { adminLoginRequest, authToken } from "./authSlice";
 import { useAppDispatch } from "@/store/store";
+import { handleAddLoader, handleRemoveLoader } from "@/components/ui/LoaderProvider";
+import { openErrorToast, openSuccessToast } from "@/components/ui/ToastProvider";
+import { useSelector } from "react-redux";
 
 export default function LoginScreen() {
   const dispatch = useAppDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { control, handleSubmit } = useForm<{ username : string; password: string }>({
+  const { control, handleSubmit } = useForm<{ username: string; password: string }>({
     defaultValues: { username: "", password: "" },
   });
 
   const onSubmit = async (values: { username: string; password: string }) => {
-    setError(null);
-    setLoading(true);
+    const payload = {
+      username: values.username,
+      password: values.password
+    }
+    handleAddLoader();
     try {
-      const payload = {
-        username : values.username,
-        password: values.password
-      }
       const response = await dispatch(adminLoginRequest(payload)).unwrap();
+      openSuccessToast("Login successful");
       console.log("Login Request Response:", response);
 
     } catch (err: any) {
+      openErrorToast(String(err?.error || err?.message || "Login failed"));
       setError(String(err?.error || err?.message || "Login failed"));
     } finally {
-      setLoading(false);
-    }
+      handleRemoveLoader();
+    } 
   };
 
   return (
@@ -142,12 +145,12 @@ export default function LoginScreen() {
             }}
           />
 
-          {error && (
+          {/* {error && (
             <Typography color="error" sx={{ textAlign: 'center', mt: 1 }}>{error}</Typography>
-          )}
+          )} */}
 
-          <Button type="submit" fullWidth disabled={loading} sx={{ mt: 2, mb: 1, py: 1.5, background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)', color: '#fff', '&:hover': { opacity: 0.95 } }}>
-            {loading ? 'Signing in…' : 'Login'}
+          <Button type="submit" fullWidth  sx={{ mt: 2, mb: 1, py: 1.5, background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)', color: '#fff', '&:hover': { opacity: 0.95 } }}>
+            Login
           </Button>
 
         </Box>
