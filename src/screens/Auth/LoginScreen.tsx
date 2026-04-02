@@ -18,18 +18,23 @@ export default function LoginScreen() {
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { control, handleSubmit } = useForm<{ email: string; password: string }>({
-    defaultValues: { email: "", password: "" },
+  const { control, handleSubmit } = useForm<{ username : string; password: string }>({
+    defaultValues: { username: "", password: "" },
   });
 
-  const onSubmit = async (values: { email: string; password: string }) => {
+  const onSubmit = async (values: { username: string; password: string }) => {
     setError(null);
     setLoading(true);
     try {
-      const response = await dispatch(adminLoginRequest());
+      const payload = {
+        username : values.username,
+        password: values.password
+      }
+      const response = await dispatch(adminLoginRequest(payload)).unwrap();
+      console.log("Login Request Response:", response);
 
     } catch (err: any) {
-      setError(String(err?.message || "Login failed"));
+      setError(String(err?.error || err?.message || "Login failed"));
     } finally {
       setLoading(false);
     }
@@ -80,13 +85,12 @@ export default function LoginScreen() {
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="caption" sx={{ color: '#9ca3af', fontWeight: 600 }}>Email Address</Typography>
+            <Typography variant="caption" sx={{ color: '#9ca3af', fontWeight: 600 }}>Username</Typography>
           </Box>
           <CustomValidatedTextInput
-            name="email"
+            name="username"
             control={control}
-            // label="Email address"
-            rules={{ required: "Email is required" }}
+            rules={{ required: "Username is required" }}
             textFieldProps={{
               placeholder: "alex@portfolio.dev",
               autoComplete: "username",
@@ -143,7 +147,7 @@ export default function LoginScreen() {
           )}
 
           <Button type="submit" fullWidth disabled={loading} sx={{ mt: 2, mb: 1, py: 1.5, background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)', color: '#fff', '&:hover': { opacity: 0.95 } }}>
-            {loading ? 'Signing in…' : 'Sign In to Admin Panel ›'}
+            {loading ? 'Signing in…' : 'Login'}
           </Button>
 
         </Box>

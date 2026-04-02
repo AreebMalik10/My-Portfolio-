@@ -1,8 +1,9 @@
 import { loginApi } from "@/Api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const adminLoginRequest = createAsyncThunk(
-    "auth/loginRequest", async (payload, { rejectWithValue }) => {
+export const adminLoginRequest = createAsyncThunk<any, { username: string; password: string }>(
+    "auth/loginRequest",
+    async (payload, { rejectWithValue }) => {
         try {
             const response = await loginApi(payload);
             // `loginApi` returns `res.data` from the API helper. Return it directly.

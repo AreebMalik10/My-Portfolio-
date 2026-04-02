@@ -5,6 +5,7 @@ import { comparePassword, signToken } from "@/lib/auth";
 
 export async function POST(req: Request) {
     const body = await req.json();
+    console.log("Received login request with body:", body);
     
     const { username, password } = body;
     if(!username || !password) {
